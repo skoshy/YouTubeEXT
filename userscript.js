@@ -1,8 +1,8 @@
-// ==UserScript==
+﻿// ==UserScript==
 // @name         YouTube Supreme
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.55
+// @version      0.56
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @match        http*://*.youtube.com/*
@@ -340,7 +340,7 @@ function initialize() {
         window.scrollTo(0,0);
     };
     newElements.goToTop.innerHTML = `
-      <div class="">?</div>
+      <div class="">▲</div>
     `;
     insertAfter(newElements.goToTop, document.querySelector('#body-container'));
 
