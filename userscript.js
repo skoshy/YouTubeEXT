@@ -2,11 +2,12 @@
 // @name         YouTube Supreme
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.54
+// @version      0.55
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @match        http*://*.youtube.com/*
 // @exclude      http*://*.youtube.com/embed/*
+// @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeSupreme/master/userscript.js
 // @grant        none
 // ==/UserScript==
 
