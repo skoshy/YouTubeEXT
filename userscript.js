@@ -2,12 +2,11 @@
 // @name         YouTube Supreme
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.56
+// @version      0.55
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @match        http*://*.youtube.com/*
 // @exclude      http*://*.youtube.com/embed/*
-// @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeSupreme/master/userscript.js
 // @grant        none
 // ==/UserScript==
 
@@ -103,6 +102,22 @@ var css = `
 #player-playlist {
   min-width: 0 !important;
 }
+
+#player-playlist .yt-uix-button-playlist-remove-item {
+  height: auto;
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  border-radius: 40px;
+  border: 1px solid #444;
+  background: rgba(0,0,0,.3);
+}
+
+#player-playlist .yt-uix-button-playlist-remove-item .yt-uix-button-icon-wrapper {
+  padding: 7px;
+}
+
+
 
 /* Player */
 
@@ -340,7 +355,7 @@ function initialize() {
         window.scrollTo(0,0);
     };
     newElements.goToTop.innerHTML = `
-      <div class="">▲</div>
+      <div class="">&#9650;</div>
     `;
     insertAfter(newElements.goToTop, document.querySelector('#body-container'));
 
