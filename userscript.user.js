@@ -6,8 +6,8 @@
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeSupreme/master/userscript.js
-// @match        http*://*.youtube.com/*
-// @exclude      http*://*.youtube.com/embed/*
+// @match        *://*.youtube.com/*
+// @exclude      *://*.youtube.com/embed/*
 // @grant        none
 // ==/UserScript==
 
