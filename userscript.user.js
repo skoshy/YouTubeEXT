@@ -2,7 +2,7 @@
 // @name         YouTube Supreme
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.593
+// @version      0.594
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeSupreme/master/userscript.js
@@ -192,6 +192,15 @@ var css = `
   .watch-sidebar {
 	width: 38% !important;
 	margin-left: 62% !important;
+  }
+}
+@media screen and (max-width: 656px) {
+  #content {
+	min-width: 0 !important;
+  }
+
+  .watch-main-col, .watch-sidebar {
+	width: 80% !important;
   }
 }
 
