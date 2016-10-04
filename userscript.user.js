@@ -2,7 +2,7 @@
 // @name         YouTube Supreme
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.595
+// @version      0.6.0
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeSupreme/master/userscript.js
@@ -15,6 +15,7 @@ var scriptid = 'yt-supreme';
 
 var topBarHeight = 10;
 var newElements = {}; // this object-array will contain all the new elements created for the page
+var timers = {}; // this object-array will contain various timers
 
 var css = `
 /* Top bar */
@@ -220,6 +221,16 @@ var css = `
 { padding: 5px; min-width: 0; }
 .flex-width-enabled .pl-video-title /* Title in the playlist view */
 { min-width: 100px; }
+
+/* CUSTOM TOOLTIP */
+.`+scriptid+`-tooltip {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  background: rgba(255, 255, 255, .8);
+  padding: 3px;
+  border-radius: 20px;
+}
 `;
 
 document.addEventListener("keydown", function(e) {
@@ -350,13 +361,74 @@ function pausePlayVideo(elId, status) {
     // from https://greasyfork.org/scripts/8687-youtube-space-pause
 }
 
+function brightnessChangeCheck(event) {
+    if (!isFocusOnInputBox(event.target)) {
+	  if (event.shiftKey) {
+		var video = document.querySelector('video.html5-main-video');
+
+		var brightness = parseFloat(parseFromFilter('brightness', video.style.filter));
+		if (!brightness || isNaN(brightness)) { // no brightness has been specified yet
+		  video.style.filter = 'brightness(1.0)';
+		  brightness = parseFloat(parseFromFilter('brightness', video.style.filter));
+		}
+		
+		if (event.keyCode === 33) { // shift+pgup
+		  var newBrightness = brightness+.1;
+		  video.style.filter = 'brightness('+newBrightness+')';
+		  showTooltip('Brightness: '+newBrightness.toFixed(2));
+		} else if (event.keyCode === 34) { // shift+pgdn
+		  var newBrightness = brightness-.1;
+		  video.style.filter = 'brightness('+newBrightness+')';
+		  showTooltip('Brightness: '+newBrightness.toFixed(2));
+		}
+	  }
+	}
+}
+
+// will parse attribute from a filter string
+// ex: parseFromFilter('brightness', 'brightness(1.5)') => 1.5
+// will return false if it can't parse it
+function parseFromFilter(name, string) {
+  if (string == undefined)
+	return false;
+  
+  var startLength = name.length+1;
+  var startPos = string.indexOf(name+'(');
+  
+  if (startPos == -1)
+	return false;
+  
+  var endPos = string.indexOf(')', startLength+startPos);
+  
+  if (endPos == -1)
+	return false;
+  
+  return string.substring(startLength+startPos, startLength+startPos+endPos);
+}
+
+function showTooltip(text) {
+  newElements.tooltip.innerHTML = text;
+  newElements.tooltip.style.display = 'block';
+  
+  clearTimeout(timers.tooltip);
+  timers.tooltip = setTimeout(function() {newElements.tooltip.style.display = 'none';}, 1000);
+}
+
 /************
 Initialize
 ************/
 
 function initialize() {
-    // initialize spacebar checking to pause video
+  	// create the tooltip  
+	newElements.tooltip = document.createElement('div');
+	newElements.tooltip.className = scriptid+'-tooltip';
+    insertAfter(newElements.tooltip, document.querySelector('#body-container'));
+  
+ 	 // initialize spacebar checking to pause video
     document.body.addEventListener('keydown', pausePlayVideoCheck);
+  
+  	// initialize check for increasing/decreasing brightness
+    document.body.addEventListener('keydown', brightnessChangeCheck);
 
     // Checks things on window resize
     window.addEventListener("resize", resizeCheck);

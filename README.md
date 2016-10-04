@@ -12,9 +12,15 @@ Makes the search bar auto-hide
 
 - ![Hideable title bar](http://i.imgur.com/nKo4RBj.gif)
 
-## How do I turn it off?
+Brightness Control using hotkeys (see hotkeys below)
 
-Disable by using the hotkey **Alt+O**.
+- ![Brightness Control](http://i.imgur.com/noYJyr0.gif)
+
+## What are all the hotkeys I can use?
+
+- **Alt+O** will disable all styling on the page
+- **Shift+PageUp** will increase the brightness of the video
+- **Shift+PageDown** will decrease the brightness.
 
 ## How do I install it?
 
