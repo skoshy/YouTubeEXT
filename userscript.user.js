@@ -2,7 +2,7 @@
 // @name         YouTube Supreme
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.594
+// @version      0.595
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeSupreme/master/userscript.js
@@ -83,12 +83,11 @@ var css = `
 
 #player-playlist .watch-playlist {
   border-top: 1px solid #3a3a3a;
-  height: 405px;
+  height: 405px !important;
   left: 0;
   margin-bottom: 0;
   position: relative;
   top: 0;
-  height: 300px;
   width: 100%;
   -moz-transform: none;
   -ms-transform: none;
