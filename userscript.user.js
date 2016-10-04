@@ -2,7 +2,7 @@
 // @name         YouTube Supreme
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.592
+// @version      0.593
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeSupreme/master/userscript.js
@@ -177,6 +177,22 @@ var css = `
 .watch-sidebar {
   margin-top: 0px !important;
   top: 0px !important;
+}
+
+/* The following media query will make the content below a video responsively change */
+@media screen and (min-width: 657px) {
+  #content {
+	min-width: 0 !important;
+  }
+
+  .watch-main-col  {
+	width: 60% !important;
+  }
+
+  .watch-sidebar {
+	width: 38% !important;
+	margin-left: 62% !important;
+  }
 }
 
 /* FOOTER */
