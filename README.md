@@ -27,7 +27,7 @@ Brightness Control using hotkeys (see hotkeys below)
 - Get [TamperMonkey](https://tampermonkey.net/) or another userscript manager
 - Install via GitHub by [clicking here](https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.user.js).
 
-This script is also cross-posted to [Greasy Fork](https://greasyfork.org/en/scripts/21012-youtube-supreme)
+This script is also cross-posted to [Greasy Fork](https://greasyfork.org/en/scripts/21012-youtubeext)
 
 ## Known Issues
 
