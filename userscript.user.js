@@ -1,17 +1,17 @@
 ﻿// ==UserScript==
-// @name         YouTube Supreme
+// @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.1
+// @version      0.6.2
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
-// @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeSupreme/master/userscript.js
+// @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
 // @match        *://*.youtube.com/*
 // @exclude      *://*.youtube.com/embed/*
 // @grant        none
 // ==/UserScript==
 
-var scriptid = 'yt-supreme';
+var scriptid = 'yt-ext';
 
 var topBarHeight = 10;
 var newElements = {}; // this object-array will contain all the new elements created for the page
