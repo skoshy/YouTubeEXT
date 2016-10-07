@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.2
+// @version      0.6.3
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -135,7 +135,6 @@ var css = `
   width: 100% !important;
   margin-left: 0 !important;
   left: 0 !important;
-  height: auto !important;
   position: relative;
 }
 
@@ -276,11 +275,18 @@ function resizeCheck(e) {
     var playerContainer = document.querySelector('#player-api');
     var playerPlaceholder = document.querySelector('#'+scriptid+'-playerPlaceholder');
     var annotationsContainer = document.querySelector('.ytp-iv-video-content');
+  
+    var videoRatio = video.videoWidth / video.videoHeight;
 
     // Change video width and height
     if (video !== null) {
         video.style.maxWidth = window.innerWidth+'px';
         video.style.maxHeight = (window.innerHeight-topBarHeight)+'px';
+	  
+	    var videoNewHeight = parseInt(parseInt(video.style.maxWidth)/videoRatio);
+	  
+	    console.log(videoNewHeight);
+	    playerContainer.style.height = (videoNewHeight)+'px';
     }
 
     // adjust the annotations so they match up with the video
