@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.5
+// @version      0.6.6
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -285,6 +285,7 @@ function resizeCheck(e) {
 	    var videoNewHeight = parseInt(parseInt(video.style.maxWidth)/videoRatio);
 
 	    playerContainer.style.height = (videoNewHeight)+'px';
+	    playerContainer.style.maxHeight = (window.innerHeight-topBarHeight)+'px';
     }
 
     // adjust the annotations so they match up with the video
@@ -320,6 +321,7 @@ function resizeCheck(e) {
 	  
 	    // reset the player height
 	    playerContainer.style.height = '';
+	    playerContainer.style.maxHeight = '';
     }
 
     playerPlaceholder.style.display = playerPlaceholderDisplay;
