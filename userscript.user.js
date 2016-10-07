@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.3
+// @version      0.6.4
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -275,17 +275,15 @@ function resizeCheck(e) {
     var playerContainer = document.querySelector('#player-api');
     var playerPlaceholder = document.querySelector('#'+scriptid+'-playerPlaceholder');
     var annotationsContainer = document.querySelector('.ytp-iv-video-content');
-  
-    var videoRatio = video.videoWidth / video.videoHeight;
 
     // Change video width and height
     if (video !== null) {
-        video.style.maxWidth = window.innerWidth+'px';
+        var videoRatio = video.videoWidth / video.videoHeight;
+	    video.style.maxWidth = window.innerWidth+'px';
         video.style.maxHeight = (window.innerHeight-topBarHeight)+'px';
-	  
+
 	    var videoNewHeight = parseInt(parseInt(video.style.maxWidth)/videoRatio);
-	  
-	    console.log(videoNewHeight);
+
 	    playerContainer.style.height = (videoNewHeight)+'px';
     }
 
@@ -468,7 +466,7 @@ function initialize() {
     var defaultEvent = {'type': 'interval'};
     resizeCheck(defaultEvent);
     setInterval(function() {
-        resizeCheck(defaultEvent);
+	    eventFire(document.getElementsByTagName('body')[0], 'resize')
     }, 400);
 }
 
@@ -513,4 +511,15 @@ function contentEval(source) {
 	// Insert the script node into the page, so it will run, and immediately remove it to clean up.
 	document.body.appendChild(script);
 	document.body.removeChild(script);
+}
+
+// Used from http://stackoverflow.com/questions/2705583/simulate-click-javascript
+function eventFire(el, etype){
+    if (el.fireEvent) {
+        (el.fireEvent('on' + etype));
+    } else {
+        var evObj = document.createEvent('Events');
+        evObj.initEvent(etype, true, false);
+        el.dispatchEvent(evObj);
+    }
 }
