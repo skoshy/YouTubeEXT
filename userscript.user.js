@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.6
+// @version      0.6.7
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -303,7 +303,7 @@ function resizeCheck(e) {
     // also, leave it un-fixed if the URL changed to a non-video page
     if (
         videoContainer !== null
-        && window.innerHeight > videoContainer.offsetHeight+150
+        && videoContainer.offsetHeight <= window.innerHeight*.75
         && !(window.location.href.indexOf('/watch?') == -1)
     ) {
         playerContainerPosition = 'fixed';
