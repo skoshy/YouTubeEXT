@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.7
+// @version      0.6.8
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -145,6 +145,11 @@ var css = `
   left: 0 !important;
 }
 
+.ytp-tooltip {
+  margin-left: 100px !important;
+  top: 0 !important;
+}
+
 /* PLAYER - ALWAYS HIDE "SUGGESTED" TEASER IN VIDEO PLAYER AT TOP RIGHT */
 
 .ytp-cards-teaser {
@@ -275,6 +280,7 @@ function resizeCheck(e) {
     var playerContainer = document.querySelector('#player-api');
     var playerPlaceholder = document.querySelector('#'+scriptid+'-playerPlaceholder');
     var annotationsContainer = document.querySelector('.ytp-iv-video-content');
+    var videoTooltipContainer = document.querySelector('.ytp-tooltip');
 
     // Change video width and height
     if (video !== null) {
@@ -286,6 +292,10 @@ function resizeCheck(e) {
 
 	    playerContainer.style.height = (videoNewHeight)+'px';
 	    playerContainer.style.maxHeight = (window.innerHeight-topBarHeight)+'px';
+        
+        if (videoTooltipContainer !== null) {
+            videoTooltipContainer.style.marginTop =  (videoNewHeight-videoTooltipContainer.offsetHeight-65) + 'px';
+        }
     }
 
     // adjust the annotations so they match up with the video
