@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.10
+// @version      0.6.11
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -490,8 +490,8 @@ function initialize() {
 	setInterval(function() {
       let player = document.querySelector("#player");
 	  
-	  if (player) {
-	    eventFire(player, 'resize');
+	  if (isTruthy(player)) {
+          eventFire(player, 'resize');
 	  }
 	}, 250);
 }
@@ -501,6 +501,21 @@ initialize();
 /************
 Utility Functions
 ************/
+
+// from https://gist.github.com/skoshy/69a7951b3070c2e2496d8257e16d7981
+function isFalsy(item) {
+	if (
+		!item
+		|| (typeof item == "object" && Object.keys(item).length == 0) // for empty objects, like {}, []
+	)
+		return true;
+	else
+		return false;
+}
+
+function isTruthy(item) {
+    return !isFalsy(item);
+}
 
 function insertAfter(newNode, referenceNode) {
 	referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
