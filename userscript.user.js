@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.11
+// @version      0.6.12
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -506,7 +506,7 @@ Utility Functions
 function isFalsy(item) {
 	if (
 		!item
-		|| (typeof item == "object" && Object.keys(item).length == 0) // for empty objects, like {}, []
+		|| (typeof item == "object" && (Object.keys(item).length == 0 && !(item instanceof HTMLElement))) // for empty objects, like {}, [], but omits HTML elements
 	)
 		return true;
 	else
