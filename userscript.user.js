@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.12
+// @version      0.6.14
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -490,7 +490,7 @@ function initialize() {
 	setInterval(function() {
       let player = document.querySelector("#player");
 	  
-	  if (isTruthy(player)) {
+	  if (isTruthy(player) && !player.classList.contains('off-screen')) {
           eventFire(player, 'resize');
 	  }
 	}, 250);
