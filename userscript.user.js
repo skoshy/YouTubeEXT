@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.15
+// @version      0.6.16
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -93,6 +93,13 @@ var css = `
 	-ms-transform: none;
 	-webkit-transform: none;
 	transform: none;
+}
+
+#player-playlist .playlist-videos-list {
+	max-height: none !important;
+	height: 400px !important;
+	position: relative !important;
+	top: 0 !important;
 }
 
 #placeholder-playlist {
