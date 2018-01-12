@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.7.0
+// @version      0.7.1
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -15,11 +15,24 @@ var scriptid = 'yt-ext';
 var newElements = {}; // this object-array will contain all the new elements created for the page
 var timers = {}; // this object-array will contain various timers
 
-var cssTopBarHeight = `56px`;
+var cssTopBarHeightOffset = `0px`;
 var css = `
+#masthead-container.ytd-app {
+transition: .2s ease-in-out;
+}
+html[`+scriptid+`-theater] #masthead-container.ytd-app {
+width: 75%;
+margin-left: 12.5%;
+opacity: 0;
+}
+
+html[`+scriptid+`-theater] #masthead-container.ytd-app:hover {
+opacity: 1;
+}
+
 ytd-watch[theater] #player.ytd-watch {
 z-index: 0;
-height: calc(100vh - `+cssTopBarHeight+`);
+height: calc(100vh - `+cssTopBarHeightOffset+`);
 max-height: none;
 }
 
@@ -27,7 +40,7 @@ ytd-watch[theater] #player.ytd-watch #player-container {
 position: fixed;
 top:0;
 box-sizing: border-box;
-padding-top: `+cssTopBarHeight+`;
+padding-top: `+cssTopBarHeightOffset+`;
 }
 
 ytd-watch[theater] #top #container.ytd-watch {
@@ -62,6 +75,9 @@ ytd-watch[theater] #top #container.ytd-watch ytd-thumbnail:hover
 #` + scriptid + `-goToTop:hover {
 	color: #222;
 	box-shadow: #aaa 0px 0px 10px;
+}
+html[`+scriptid+`-scroll-at-top] #` + scriptid + `-goToTop {
+    display: none !important;
 }
 
 /* CUSTOM TOOLTIP */
@@ -114,7 +130,7 @@ function turnOff() {
 	This function does a variety of checks and tweaks to the page on the resize and URL popstate
 */
 function resizeCheck(e) {
-	
+	// set theat
 }
 
 // passed a target element, will check if it's an input box
@@ -262,6 +278,23 @@ function initialize() {
 	  if (isTruthy(player) && !player.classList.contains('off-screen')) {
           eventFire(player, 'resize');
 	  }
+
+      // add/remove theater mode from root body element
+      if (document.querySelector('ytd-watch[theater]') != null) {
+          // theater mode, set it on the body element
+          document.querySelector('html').setAttribute(scriptid+`-theater`, '');
+      } else {
+          document.querySelector('html').removeAttribute(scriptid+`-theater`);
+      }
+
+      // add/remove variable to determine if we're at the top of the page
+      if (document.querySelector('html').scrollTop != 0) {
+          // we've scrolled down the page a little
+          document.querySelector('html').removeAttribute(scriptid+`-scroll-at-top`);
+      } else {
+          // top of the page
+          document.querySelector('html').setAttribute(scriptid+`-scroll-at-top`, '');
+      }
 	}, 250);
 }
 
