@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.7.2
+// @version      0.7.3
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -46,9 +46,13 @@ padding-top: `+cssTopBarHeightOffset+`;
 ytd-watch[theater] #top #container.ytd-watch {
 z-index: 1;
 position: relative;
-background-color: rgba(0,0,0,.55);
+background-color: rgba(255,255,255,.55);
 opacity: .55;
 transition: .2s ease-in-out;
+}
+
+html[dark="true"] ytd-watch[theater] #top #container.ytd-watch {
+background-color: rgba(0,0,0,.55);
 }
 
 ytd-watch[theater]:hover #top #container.ytd-watch {
