@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.7.1
+// @version      0.7.2
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -46,13 +46,19 @@ padding-top: `+cssTopBarHeightOffset+`;
 ytd-watch[theater] #top #container.ytd-watch {
 z-index: 1;
 position: relative;
-background-color: rgba(0,0,0,.45);
+background-color: rgba(0,0,0,.55);
+opacity: .55;
+transition: .2s ease-in-out;
+}
+
+ytd-watch[theater]:hover #top #container.ytd-watch {
+opacity: 1;
 }
 
 ytd-watch[theater] #top #container.ytd-watch #author-thumbnail,
 ytd-watch[theater] #top #container.ytd-watch #avatar,
 ytd-watch[theater] #top #container.ytd-watch ytd-thumbnail
-{ opacity: .45; }
+{ opacity: .55; transition: .2s ease-in-out; }
 
 ytd-watch[theater] #top #container.ytd-watch #author-thumbnail:hover,
 ytd-watch[theater] #top #container.ytd-watch #avatar:hover,
@@ -71,6 +77,7 @@ ytd-watch[theater] #top #container.ytd-watch ytd-thumbnail:hover
 	cursor: pointer;
 	color: #666;
 	z-index: 2;
+    transition: .2s ease-in-out;
 }
 #` + scriptid + `-goToTop:hover {
 	color: #222;
