@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.6.16
+// @version      0.7.0
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -12,158 +12,41 @@
 // ==/UserScript==
 var scriptid = 'yt-ext';
 
-var topBarHeight = 10;
 var newElements = {}; // this object-array will contain all the new elements created for the page
 var timers = {}; // this object-array will contain various timers
 
+var cssTopBarHeight = `56px`;
 var css = `
-/* Top bar */
-
-#masthead-positioner {
-	height: ` + topBarHeight + `px !important;
-	overflow: hidden;
-	background-color: black;
-	transition: height 0.3s, background-color 0.3s;
+ytd-watch[theater] #player.ytd-watch {
+z-index: 0;
+height: calc(100vh - `+cssTopBarHeight+`);
+max-height: none;
 }
 
-#masthead-positioner:hover {
-	background-color: white;
-	height: 50px !important;
+ytd-watch[theater] #player.ytd-watch #player-container {
+position: fixed;
+top:0;
+box-sizing: border-box;
+padding-top: `+cssTopBarHeight+`;
 }
 
-#yt-masthead-container {
-	background-color: transparent !important;
+ytd-watch[theater] #top #container.ytd-watch {
+z-index: 1;
+position: relative;
+background-color: rgba(0,0,0,.45);
 }
 
-#masthead-positioner-height-offset {
-	height: 0px !important;
-}
+ytd-watch[theater] #top #container.ytd-watch #author-thumbnail,
+ytd-watch[theater] #top #container.ytd-watch #avatar,
+ytd-watch[theater] #top #container.ytd-watch ytd-thumbnail
+{ opacity: .45; }
 
-/* Player Bottom Controls */
-
-.ytp-chrome-bottom {
-	position: relative !important;
-	height: 40px !important;
-	margin-top: -49px !important;
-	margin-left: auto;
-	margin-right: auto;
-	left: 0 !important;
-	overflow: hidden;
-	padding-top: 10px;
-}
-
-.ytp-progress-bar-container {
-	height: 10px !important;
-	opacity: .5;
-	top: 0px !important;
-} /* makes the progress bar taller */
-
-.ytp-progress-bar-container:hover {
-	opacity: .8;
-} /* makes the progress bar taller */
-
-.ytp-chrome-controls {
-	margin-top: 6px;
-}
-
-.ytp-scrubber-button {
-	height: 16px !important;
-	width: 16px !important;
-	top: -2px !important;
-}
-
-/* Comments */
-
-#watch-discussion {
-	display: block !important;
-	overflow-x: hidden;
-}
-
-/* PLAYLIST */
-
-#player #player-playlist .watch-playlist {
-	border-top: 1px solid #3a3a3a;
-	height: auto !important;
-	left: 0;
-	margin-bottom: 0;
-	position: relative;
-	top: 0;
-	width: 100%;
-	-moz-transform: none;
-	-ms-transform: none;
-	-webkit-transform: none;
-	transform: none;
-}
-
-#player-playlist .playlist-videos-list {
-	max-height: none !important;
-	height: 400px !important;
-	position: relative !important;
-	top: 0 !important;
-}
-
-#placeholder-playlist {
-	display: none !important;
-}
-
-#player-playlist {
-	min-width: 0 !important;
-}
-
-#player-playlist .yt-uix-button-playlist-remove-item {
-	height: auto;
-	position: absolute;
-	right: 0;
-	z-index: 10;
-	border-radius: 40px;
-	border: 1px solid #444;
-	background: rgba(0,0,0,.3);
-}
-
-#player-playlist .yt-uix-button-playlist-remove-item .yt-uix-button-icon-wrapper {
-	padding: 7px;
-}
-
-
-
-/* Player */
-
-#placeholder-player {
-	display: none;
-}
-
-#player {
-	max-width: none !important;
-	min-width: 0 !important;
-}
-
-#player-api, #player-unavailable {
-	width: 100% !important;
-	margin-left: 0 !important;
-	left: 0 !important;
-	position: relative;
-}
-
-.html5-video-container video {
-	width: 100% !important;
-	height: auto !important;
-	position: relative !important;
-	left: 0 !important;
-}
-
-.ytp-tooltip {
-	margin-left: 100px !important;
-	top: 0 !important;
-}
-
-/* PLAYER - ALWAYS HIDE "SUGGESTED" TEASER IN VIDEO PLAYER AT TOP RIGHT */
-
-.ytp-cards-teaser {
-	display: none !important;
-}
+ytd-watch[theater] #top #container.ytd-watch #author-thumbnail:hover,
+ytd-watch[theater] #top #container.ytd-watch #avatar:hover,
+ytd-watch[theater] #top #container.ytd-watch ytd-thumbnail:hover
+{ opacity: 1; }
 
 /* GO TO TOP BUTTON */
-
 #` + scriptid + `-goToTop {
 	position: fixed;
 	bottom: 20px;
@@ -176,61 +59,10 @@ var css = `
 	color: #666;
 	z-index: 2;
 }
-
 #` + scriptid + `-goToTop:hover {
 	color: #222;
 	box-shadow: #aaa 0px 0px 10px;
 }
-
-/* WATCH MORE SECTION */
-
-.watch-sidebar {
-	margin-top: 0px !important;
-	top: 0px !important;
-}
-
-/* The following media query will make the content below a video responsively change */
-@media screen and (min-width: 657px) {
-	#content {
-		min-width: 0 !important;
-	}
-
-	.watch-main-col  {
-		width: 60% !important;
-	}
-
-	.watch-sidebar {
-		width: 38% !important;
-		margin-left: 62% !important;
-	}
-}
-@media screen and (max-width: 656px) {
-	#content {
-	min-width: 0 !important;
-	}
-
-	.watch-main-col, .watch-sidebar {
-	width: 80% !important;
-	}
-}
-
-/* FOOTER */
-#body-container {
-	padding-bottom: 0;
-}
-
-#footer-container {
-	display: none;
-}
-
-/* "Flex Width" (small viewport) TWEAKS */
-
-.flex-width-enabled.flex-width-enabled-snap .content-alignment, .content-snap-width-1 .flex-width-enabled.flex-width-enabled-snap .content-alignment /* This is to make the page full width if the viewport is small */
-{ width: 100%; }
-.flex-width-enabled .pl-video-badges, .flex-width-enabled .pl-video-added-by /* in the playlist list, these are fields that people don't really care about */
-{ padding: 5px; min-width: 0; }
-.flex-width-enabled .pl-video-title /* Title in the playlist view */
-{ min-width: 100px; }
 
 /* CUSTOM TOOLTIP */
 .` + scriptid + `-tooltip {
@@ -282,67 +114,7 @@ function turnOff() {
 	This function does a variety of checks and tweaks to the page on the resize and URL popstate
 */
 function resizeCheck(e) {
-	var video = document.querySelector('#player-api video');
-	var videoContainer = document.querySelector('#player-api .html5-video-player');
-	var playerContainer = document.querySelector('#player-api');
-	var playerPlaceholder = document.querySelector('#' + scriptid + '-playerPlaceholder');
-	var annotationsContainer = document.querySelector('.ytp-iv-video-content');
-	var videoTooltipContainer = document.querySelector('.ytp-tooltip');
-
-	// Change video width and height
-	if (video !== null) {
-		var videoRatio = video.videoWidth / video.videoHeight;
-		video.style.maxWidth = window.innerWidth + 'px';
-		video.style.maxHeight = (window.innerHeight - topBarHeight) + 'px';
-
-		var videoNewHeight = parseInt(parseInt(video.style.maxWidth) / videoRatio);
-
-		playerContainer.style.height = (videoNewHeight) + 'px';
-		playerContainer.style.maxHeight = (window.innerHeight - topBarHeight) + 'px';
-
-		if (videoTooltipContainer !== null) {
-			videoTooltipContainer.style.marginTop = (videoNewHeight - videoTooltipContainer.offsetHeight - 65) + 'px';
-		}
-	}
-
-	// adjust the annotations so they match up with the video
-	if (annotationsContainer !== null) {
-		annotationsContainer.style.zoom = (
-			parseInt(window.getComputedStyle(videoContainer).width) / parseInt(annotationsContainer.style.width)
-		);
-	}
-
-	var playerPlaceholderDisplay;
-	var playerContainerPosition;
-
-	// now let's check the height of the video container.
-	// if there's space on the bottom, fix the video to the top so you can scroll with it in view
-	// also, leave it un-fixed if the URL changed to a non-video page
-	if (
-		videoContainer !== null &&
-		videoContainer.offsetHeight <= window.innerHeight * .75 &&
-		!(window.location.href.indexOf('/watch?') == -1)
-	) {
-		playerContainerPosition = 'fixed';
-	} else {
-		playerContainerPosition = '';
-	}
-
-	playerPlaceholder.style.height = (playerContainer.offsetHeight - topBarHeight) + 'px';
-	playerPlaceholder.style.width = (playerContainer.offsetWidth - topBarHeight) + 'px';
-
-	if (!isScriptEnabled()) { // if the script isn't enabled
-		// don't show the placeholder
-		playerPlaceholderDisplay = 'none';
-		playerContainerPosition = '';
-
-		// reset the player height
-		playerContainer.style.height = '';
-		playerContainer.style.maxHeight = '';
-	}
-
-	playerPlaceholder.style.display = playerPlaceholderDisplay;
-	playerContainer.style.position = playerContainerPosition;
+	
 }
 
 // passed a target element, will check if it's an input box
@@ -453,7 +225,7 @@ function initialize() {
 	newElements.tooltip = document.createElement('div');
 	newElements.tooltip.className = scriptid + '-tooltip';
 	setTimeout(function(){newElements.tooltip.style.display = 'none';}, 200); // there needs to be a delay to hide the brightness box for some reason
-	insertAfter(newElements.tooltip, document.querySelector('#body-container'));
+	insertAfter(newElements.tooltip, document.querySelector('body'));
 
 	// initialize spacebar checking to pause video
 	document.body.addEventListener('keydown', pausePlayVideoCheck);
@@ -468,24 +240,14 @@ function initialize() {
 
 	addGlobalStyle(css, scriptid);
 
-	var playerContainer = document.querySelector('#player-api');
-
-	// create the player placeholder. this will be 'displayed' when the player fixes to the top. this will push the rest of the content down.
-	newElements.playerPlaceholder = document.createElement('div');
-	newElements.playerPlaceholder.style.display = 'none';
-	newElements.playerPlaceholder.id = scriptid + '-playerPlaceholder';
-	insertAfter(newElements.playerPlaceholder, playerContainer);
-
 	// create the "Go To Top" button
 	newElements.goToTop = document.createElement('div');
 	newElements.goToTop.id = scriptid + '-goToTop';
 	newElements.goToTop.onclick = function() {
 		window.scrollTo(0, 0);
 	};
-	newElements.goToTop.innerHTML = `
-	<div class="">&#9650;</div>
-	`;
-	insertAfter(newElements.goToTop, document.querySelector('#body-container'));
+	newElements.goToTop.innerHTML = `<div class="">&#9650;</div>`;
+	insertAfter(newElements.goToTop, document.querySelector('body'));
 
 	turnOn();
 

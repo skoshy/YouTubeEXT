@@ -6,6 +6,8 @@ Does stuff to make YouTube better.
 
 Incorporates some CSS changes to make videos play full-width. Useful when keeping YouTube in a small window.
 
+**Note:** There's been a rewrite since the new YouTube redesign. Instead of making YouTube work well in small windows, the extension now focuses on making theater mode better. Enable theater mode on the player and you can scroll through comments and info while keeping the video in the background.
+
 - ![Full Width](http://i.imgur.com/jwr2ZMN.png)
 
 Makes the search bar auto-hide
