@@ -2,7 +2,7 @@
 // @name         YouTubeEXT
 // @icon         https://www.youtube.com/yt/brand/media/image/YouTube-icon-full_color.png
 // @namespace    skoshy.com
-// @version      0.7.3
+// @version      0.7.4
 // @description  Does cool things with YouTube
 // @author       Stefan Koshy
 // @updateURL    https://raw.githubusercontent.com/skoshy/YoutubeEXT/master/userscript.js
@@ -30,20 +30,20 @@ html[`+scriptid+`-theater] #masthead-container.ytd-app:hover {
 opacity: 1;
 }
 
-ytd-watch[theater] #player.ytd-watch {
+html[`+scriptid+`-theater] ytd-watch #player.ytd-watch {
 z-index: 0;
 height: calc(100vh - `+cssTopBarHeightOffset+`);
 max-height: none;
 }
 
-ytd-watch[theater] #player.ytd-watch #player-container {
+html[`+scriptid+`-theater] ytd-watch #player.ytd-watch #player-container {
 position: fixed;
 top:0;
 box-sizing: border-box;
 padding-top: `+cssTopBarHeightOffset+`;
 }
 
-ytd-watch[theater] #top #container.ytd-watch {
+html[`+scriptid+`-theater] ytd-watch #top #container.ytd-watch {
 z-index: 1;
 position: relative;
 background-color: rgba(255,255,255,.55);
@@ -51,23 +51,42 @@ opacity: .55;
 transition: .2s ease-in-out;
 }
 
-html[dark="true"] ytd-watch[theater] #top #container.ytd-watch {
+html[dark="true"][`+scriptid+`-theater] ytd-watch #top #container.ytd-watch {
 background-color: rgba(0,0,0,.55);
 }
 
-ytd-watch[theater]:hover #top #container.ytd-watch {
+html[`+scriptid+`-theater] ytd-watch:hover #top #container.ytd-watch {
 opacity: 1;
 }
 
-ytd-watch[theater] #top #container.ytd-watch #author-thumbnail,
-ytd-watch[theater] #top #container.ytd-watch #avatar,
-ytd-watch[theater] #top #container.ytd-watch ytd-thumbnail
+html[`+scriptid+`-theater] ytd-watch #top #container.ytd-watch #author-thumbnail,
+html[`+scriptid+`-theater] ytd-watch #top #container.ytd-watch #avatar,
+html[`+scriptid+`-theater] ytd-watch #top #container.ytd-watch ytd-thumbnail
 { opacity: .55; transition: .2s ease-in-out; }
 
-ytd-watch[theater] #top #container.ytd-watch #author-thumbnail:hover,
-ytd-watch[theater] #top #container.ytd-watch #avatar:hover,
-ytd-watch[theater] #top #container.ytd-watch ytd-thumbnail:hover
+html[`+scriptid+`-theater] ytd-watch #top #container.ytd-watch #author-thumbnail:hover,
+html[`+scriptid+`-theater] ytd-watch #top #container.ytd-watch #avatar:hover,
+html[`+scriptid+`-theater] ytd-watch #top #container.ytd-watch ytd-thumbnail:hover
 { opacity: 1; }
+
+/* Specifically used for small screen theater mode */
+html[`+scriptid+`-theater] ytd-watch .ytp-iv-video-content {
+width: 100% !important;
+}
+
+html[`+scriptid+`-theater] ytd-watch #top,
+html[`+scriptid+`-theater] ytd-watch #player {
+width: 100%;
+}
+
+html[`+scriptid+`-theater] .html5-video-player .video-stream {
+padding: 0;
+}
+
+html[`+scriptid+`-theater] ytd-watch .ytp-chrome-bottom {
+left: 0 !important;
+margin: 0 auto;
+}
 
 /* GO TO TOP BUTTON */
 #` + scriptid + `-goToTop {
@@ -291,7 +310,7 @@ function initialize() {
 	  }
 
       // add/remove theater mode from root body element
-      if (document.querySelector('ytd-watch[theater]') != null) {
+      if (document.querySelector('ytd-watch[theater-requested_]') != null) {
           // theater mode, set it on the body element
           document.querySelector('html').setAttribute(scriptid+`-theater`, '');
       } else {
